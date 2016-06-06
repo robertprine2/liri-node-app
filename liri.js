@@ -23,57 +23,68 @@ console.log(twitterKeys);
 
 var action = progress.argv[2];
 
-// ***might not need*** uses the value entered if needed for the function
+// uses the value entered if needed for the function
 
 var value = process.argv[3];
 
-// switch to call the different functions
+function runApp(action, value) {
 
-switch(action) {
-	case 'my-tweets': 
-		my-tweets();
-		break;
-	case 'spotify-this-song':
-		spotify-this-song();
-		break;
-	case 'movie-this':
-		movie-this();
-		break;
-	case 'do-what-it-says':
-		do-what-it-says();
-} // end of switch
+	// switch to call the different functions
+
+	switch(action) {
+		case 'my-tweets': 
+			myTweets();
+			break;
+		case 'spotify-this-song':
+			spotifyThisSong();
+			break;
+		case 'movie-this':
+			movieThis();
+			break;
+		case 'do-what-it-says':
+			doWhatItSays();
+			break;
+	} // end of switch
+
+} // end of runApp function
 
 // if my-tweets show the last 20 tweets and when they were created
 
-function my-tweets(){
+function myTweets(){
 
 }
 
 // if spotify-this-song shows information about the song that is selected
 
-function spotify-this-song() {
+function spotifyThisSong() {
 
 }
 
 // if movie-this shows information about the movie selected
 
-function movie-this() {
+function movieThis() {
 
 	// Store all of the arguments in an array
 
 	var nodeArgs = process.argv;
 
-	// Create an empty variable for holding the movie name
+	// if user enters a value - process.argv[3]
 
-	var movieName = "";
+	if (value) {
 
-	// if no movie title was entered search Mr. Nobody
+	   	// Create an empty variable for holding the movie name
 
-	if (process.argv[3] == undefined) {
-
-	   	movieName = Mr. Nobody;
+		var movieName = "";
 
 	} // end of if no movie title was entered
+
+	// else no movie title was entered search Mr. Nobody
+
+	else {
+
+		movieName = "Mr. Nobody";
+
+	} // end of else
 
 	// Change any " " to + in the movie title
 
@@ -101,7 +112,7 @@ function movie-this() {
 
 	// OMDB API request 
 
-	var queryUrl = 'http://www.omdbapi.com/?t=' + movieName +'&y=&plot=short&r=json';
+	var queryUrl = 'http://www.omdbapi.com/?t=' + movieName +'&tomatoes=true';
 
 	request(queryUrl, function (error, response, body) {
 
@@ -119,6 +130,8 @@ function movie-this() {
 
 // if do-what-it-says reads the txt file and calls the function associated with it
 
-function do-what-it-says() {
+function doWhatItSays() {
 
 } // end of do-what-it-says function
+
+runApp(action, value);
