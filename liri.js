@@ -16,16 +16,22 @@ var spotify = require('spotify');
 
 // load keys.js to access twitter keys
 
-var twitterKeys = require('./keys.js');
-console.log(twitterKeys);
+var keys = require('./keys.js');
+var keysTwitter = keys.twitterKeys;
+
+console.log(keysTwitter);
 
 // call the function that you want to use
 
-var action = progress.argv[2];
+var action = process.argv[2];
 
 // uses the value entered if needed for the function
 
 var value = process.argv[3];
+
+// Store all of the arguments in an array
+
+var nodeArgs = process.argv;
 
 function runApp(action, value) {
 
@@ -52,7 +58,34 @@ function runApp(action, value) {
 
 function myTweets(){
 
-}
+	var client = new twitter({
+
+		consumer_key: keysTwitter.consumer_key,
+		consumer_secret: keysTwitter.consumer_secret,
+		access_token_key: keysTwitter.access_token_key,
+		access_token_secret: keysTwitter.access_token_secret
+
+	});
+
+	client.get('statuses/user_timeline', {screen_name: 'RobertPrine', count: 20}, function(error, tweets, response) {
+   			
+   			for (var prop in tweets){
+   				console.log(tweets[prop].text);
+   				console.log(tweets[prop].created_at);
+   				console.log();
+
+   	// 			fs.appendFile("./log.txt", tweets[prop].text + ' \n' + tweets[prop].created_at  + ' \n', function(err) {
+	   //  			if(err) {
+	   //     	 			return console.log(err);
+	   //  			} // end of if err
+
+				// }); // end of appendFile
+
+   			} // end of for loop
+
+	}); // end of request to twitter for my account
+
+} // end of myTweets function
 
 // if spotify-this-song shows information about the song that is selected
 
@@ -63,10 +96,6 @@ function spotifyThisSong() {
 // if movie-this shows information about the movie selected
 
 function movieThis() {
-
-	// Store all of the arguments in an array
-
-	var nodeArgs = process.argv;
 
 	// if user enters a value - process.argv[3]
 
@@ -106,8 +135,6 @@ function movieThis() {
 
 	    } // end of else
 
-	    console.log(movieName)
-
 	} // end of for loop
 
 	// OMDB API request 
@@ -120,9 +147,20 @@ function movieThis() {
 
 	    if (!error && response.statusCode == 200) {
 
-	        // Parse the body of the site and recover just the imdbRating
+	        // Parse the body of the site so that we can pull different keys more easily
 	        
-	        console.log("Release Year: " + JSON.parse(body)["Year"])
+	        body = JSON.parse(body);
+	        console.log("Title: " + body.Title);
+	        console.log("Year: " + body.Year);
+	        console.log("IMDB Rating: " + body.imdbRating);
+	        console.log("Country: " + body.Country);
+	        console.log("Language: " + body.Language);
+	        console.log("Plot: " + body.Plot);
+	        console.log("Actors: " + body.Actors);
+	        console.log("Rotten Tomatoes Rating: " + body.tomatoRating);
+	        console.log("Rotten Tomatoes URL: " + body.tomatoURL);
+
+	        
 	    } // end of if the request is successful
 	}); // end of request
 
