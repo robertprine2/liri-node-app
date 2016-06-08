@@ -33,7 +33,7 @@ var value = process.argv[3];
 
 var nodeArgs = process.argv;
 
-function runApp(action, value) {
+function goAppGo(action, value) {
 
 	// switch to call the different functions
 
@@ -48,11 +48,11 @@ function runApp(action, value) {
 			movieThis();
 			break;
 		case 'do-what-it-says':
-			doWhatItSays(value);
+			doWhatItSays();
 			break;
 	} // end of switch
 
-} // end of runApp function
+} // end of goAppGo function
 
 // if my-tweets show the last 20 tweets and when they were created
 
@@ -72,14 +72,13 @@ function myTweets(){
    			for (var prop in tweets){
    				console.log(tweets[prop].text);
    				console.log(tweets[prop].created_at);
-   				console.log();
 
-   	// 			fs.appendFile("./log.txt", tweets[prop].text + ' \n' + tweets[prop].created_at  + ' \n', function(err) {
-	   //  			if(err) {
-	   //     	 			return console.log(err);
-	   //  			} // end of if err
+   				fs.appendFile("./log.txt", tweets[prop].text + ' \n' + tweets[prop].created_at  + ' \n', function(err) {
+	    			if(err) {
+	       	 			return console.log(err);
+	    			} // end of if err
 
-				// }); // end of appendFile
+				}); // end of appendFile
 
    			} // end of for loop
 
@@ -122,10 +121,23 @@ function spotifyThisSong() {
 
 		else {
 
-			console.dir(data.tracks.items[0].artists[0].name);
-			console.dir(data.tracks.items[0].name);
-			console.dir(data.tracks.items[0].preview_url);
-			console.dir(data.tracks.items[0].album.name);
+			console.dir('Artist(s): ' + data.tracks.items[0].artists[0].name);
+			console.dir('Song Name: ' + data.tracks.items[0].name);
+			console.dir('Preview Link: ' + data.tracks.items[0].preview_url);
+			console.dir('Album: ' + data.tracks.items[0].album.name);
+
+			// store information as a string
+
+			logText = JSON.stringify({
+				artist: data.tracks.items[0].artists[0].name,
+				songName: data.tracks.items[0].name,
+				previewLink: data.tracks.items[0].preview_url,
+				album: data.tracks.items[0].album.name
+			}); // end of logText stringify
+
+			// log information in logText in log.txt
+
+			logInfo();
 
 		} // end else err
 
@@ -222,10 +234,25 @@ function doWhatItSays() {
 
 		// runs liri app using the data from readArr
 
-		runApp(readArr[0], readArr[1]);
+		action = readArr[0];
+		value = readArr[1];
+
+		goAppGo(action, value);
 
 	}); // end of readFile
 
 } // end of do-what-it-says function
 
-runApp(action, value);
+function logInfo() {
+
+	fs.appendFile('./log.txt', logText +'\n', function(err) {
+
+		if(err) {
+			return console.log(err);
+		} // end if err
+
+	}) // end of appendFile to log.txt
+
+} // end of logText function
+
+goAppGo(action, value);
