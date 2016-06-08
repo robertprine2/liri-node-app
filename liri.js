@@ -91,7 +91,47 @@ function myTweets(){
 
 function spotifyThisSong() {
 
-}
+	// if user enters a value - process.argv[3]
+
+	if (value) {
+
+		var song = value;
+
+	} // end of if value = true
+
+	else {
+
+		var song = "what's my age again";
+
+	} // end of else value = true
+
+	// searches spotify API based on process.argv[3]
+
+	spotify.search({ type: 'track', query: song}, function(err, data) {
+
+		// if there is an error
+
+		if (err) {
+
+			console.log('Error occurred: ' + err);
+			return;
+
+		} // end of if err
+
+		// else console.dir song information
+
+		else {
+
+			console.dir(data.tracks.items[0].artists[0].name);
+			console.dir(data.tracks.items[0].name);
+			console.dir(data.tracks.items[0].preview_url);
+			console.dir(data.tracks.items[0].album.name);
+
+		} // end else err
+
+	}); // end of spotify search
+
+} // end of spotifyThisSong function
 
 // if movie-this shows information about the movie selected
 
