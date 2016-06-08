@@ -48,7 +48,7 @@ function runApp(action, value) {
 			movieThis();
 			break;
 		case 'do-what-it-says':
-			doWhatItSays();
+			doWhatItSays(value);
 			break;
 	} // end of switch
 
@@ -209,6 +209,22 @@ function movieThis() {
 // if do-what-it-says reads the txt file and calls the function associated with it
 
 function doWhatItSays() {
+
+	// read rand.txt and save it to 'data'
+
+	fs.readFile("./random.txt", "utf8", function(error, data) {
+
+		// makes an array of the data in random.txt
+
+		var readArr = data.split(',');
+
+		console.dir(readArr);
+
+		// runs liri app using the data from readArr
+
+		runApp(readArr[0], readArr[1]);
+
+	}); // end of readFile
 
 } // end of do-what-it-says function
 
