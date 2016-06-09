@@ -71,7 +71,7 @@ function myTweets(){
    				console.log(tweets[prop].text);
    				console.log(tweets[prop].created_at);
 
-   				fs.appendFile("./log.txt", tweets[prop].text + ' \n' + tweets[prop].created_at  + ' \n', function(err) {
+   				fs.appendFile("./log.txt", tweets[prop].text + '\n' + tweets[prop].created_at  + '\n', function(err) {
 	    			if(err) {
 	       	 			return console.log(err);
 	    			} // end of if err
