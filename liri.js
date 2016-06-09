@@ -19,8 +19,6 @@ var spotify = require('spotify');
 var keys = require('./keys.js');
 var keysTwitter = keys.twitterKeys;
 
-console.log(keysTwitter);
-
 // call the function that you want to use
 
 var action = process.argv[2];
@@ -212,6 +210,24 @@ function movieThis() {
 	        console.log("Rotten Tomatoes Rating: " + body.tomatoRating);
 	        console.log("Rotten Tomatoes URL: " + body.tomatoURL);
 
+	        // store information as a string
+
+			logText = JSON.stringify({
+				title: body.Title,
+				year: body.Year,
+				imdbRating: body.imdbRating,
+				country: body.Country,
+				language: body.Language,
+				plot: body.Plot,
+				actors: body.Actors,
+				rottenRating: body.tomatoRating,
+				rottenURL: body.tomatoURL
+			}); // end of logText stringify
+
+			// log information in logText in log.txt
+
+			logInfo();
+
 	        
 	    } // end of if the request is successful
 	}); // end of request
@@ -245,13 +261,29 @@ function doWhatItSays() {
 
 function logInfo() {
 
-	fs.appendFile('./log.txt', logText +'\n', function(err) {
+	if (value == undefined) {
 
-		if(err) {
-			return console.log(err);
-		} // end if err
+		fs.appendFile('./log.txt', action + '\n' + logText +'\n', function(err) {
 
-	}) // end of appendFile to log.txt
+			if(err) {
+				return console.log(err);
+			} // end if err
+
+		}) // end of appendFile to log.txt
+
+	} // end if value undefined
+
+	else {
+
+		fs.appendFile('./log.txt', action + ' ' + value + '\n' + logText +'\n', function(err) {
+
+			if(err) {
+				return console.log(err);
+			} // end if err
+
+		}) // end of appendFile to log.txt
+
+	} // end of else value = undefined
 
 } // end of logText function
 
